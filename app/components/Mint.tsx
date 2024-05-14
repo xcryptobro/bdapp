@@ -3,6 +3,7 @@
 import { useAccount, useChainId, useReadContracts } from 'wagmi'
 import { erc20Abi, formatUnits, formatEther } from 'viem'
 import { abi } from '../../abi'
+import { Loading } from './Loading'
 
 export default function Mint() {
   const { status, address } = useAccount()
@@ -72,46 +73,47 @@ export default function Mint() {
   })
 
   const [
-    balance,
-    decimals,
-    totalSupply,
-    maxSupply,
+    bigIntBalance,
+    bigIntDecimals,
+    bigIntTotalSupply,
+    bigIntMaxSupply,
     maxMint,
     paused,
     price,
     holderPrice
   ] = readData || []
 
-  const isHolder =
-    balance &&
-    decimals &&
-    !isPending &&
-    parseInt(formatUnits(balance, decimals)) > 69
-      ? true
-      : false
+  const balance =
+    (bigIntBalance &&
+      bigIntDecimals &&
+      parseInt(formatUnits(bigIntBalance, bigIntDecimals))) ||
+    0
+  const totalSupply =
+    (bigIntTotalSupply && parseInt(formatUnits(bigIntTotalSupply, 0))) || 0
+  const maxSupply =
+    (bigIntMaxSupply && parseInt(formatUnits(bigIntMaxSupply, 0))) || 5100
 
-  if (status === 'disconnected') return <div>Connect Wallet</div>
-
-  if (status === 'connecting' || status === 'reconnecting')
-    return <div>Loading...</div>
-
-  if (error) return <div>Error {error.message}</div>
-
-  if (paused) return <div>Paused</div>
-
-  if (totalSupply === maxSupply) return <div>Sold Out</div>
+  const isHolder = balance && balance > 69 ? true : false
 
   return (
     <div className='m-6 p-4 bg-neutral-800/30 text-white'>
+      {status === 'disconnected' && <Loading />}
+      {status === 'connecting' || (status === 'reconnecting' && <Loading />)}
+      {error && <div>Error {error.message}</div>}
+      {paused && <div>Paused</div>}
+      {maxSupply > 0 && totalSupply === maxSupply && <div>Sold Out</div>}
       <p className='text-3xl font-bold'>
         {isHolder ? 'Holder Price' : 'Price'}
       </p>
       <p className='text-sm'>
-        {`${
-          isHolder
-            ? formatEther(holderPrice!, 'wei')
-            : formatEther(price!, 'wei')
-        } ETH`}
+        {holderPrice && price && (
+          <>
+            {isHolder
+              ? formatEther(holderPrice, 'wei')
+              : formatEther(price, 'wei')}
+            {' ETH'}
+          </>
+        )}
       </p>
     </div>
   )

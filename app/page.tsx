@@ -78,7 +78,7 @@ export default function Home() {
           target='_blank'
           rel='noopener noreferrer'
         >
-          <h2 className='text-md font-semibold'>GitHub Repository</h2>
+          <h2 className='text-md font-semibold'>GitHub Repo</h2>
           <p className='m-0 max-w-[30ch] text-balance text-xs'>
             GitHub source code for minting website.
           </p>

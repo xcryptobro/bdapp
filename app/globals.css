@@ -23,3 +23,18 @@ body {
     text-wrap: balance;
   }
 }
+
+.loading {
+  animation: animate 2s infinite;
+}
+
+@keyframes animate {
+  0% {
+    /* transform: rotate(0deg); */
+    transform: translate(-50%, -50%) rotate(0deg);
+    transition: transform 0.5s;
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}

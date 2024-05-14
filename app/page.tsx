@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import Mint from '@/app/components/Mint'
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
           priority
           unoptimized
         />
+        <Mint />
       </div>
 
       <div className='mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-5 lg:text-left'>

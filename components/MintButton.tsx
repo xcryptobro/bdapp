@@ -42,7 +42,7 @@ export default function MintButton() {
   const currQty = tmpQty > 20 ? 20 : tmpQty < 1 ? 1 : tmpQty
 
   const isHolder = balance && balance > 0 ? true : false
-  const price = isHolder ? 0.0051 : 0.01
+  const price = isHolder ? 0.01 : 0.02
   const total = currQty * price
 
   function countDecimals(num: number) {
